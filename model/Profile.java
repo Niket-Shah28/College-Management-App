@@ -63,11 +63,48 @@ public class Profile {
 		this.isStudent = isStudent;
 		this.isTeacher = isTeacher;
 	}
+	
+	public Profile(int profileId, String firstName, String email, GenderChoice gender, String contactNumber,
+			String address, String city, String state, String country, boolean disabilityStatus,
+			String emergencyContactNumber) {
+		super();
+		this.profileId = profileId;
+		this.firstName = firstName;
+		this.email = email;
+		this.gender = gender;
+		this.contactNumber = contactNumber;
+		this.address = address;
+		this.city = city;
+		this.state = state;
+		this.country = country;
+		this.disabilityStatus = disabilityStatus;
+		this.emergencyContactNumber = emergencyContactNumber;
+	}
+
+	public Profile() {}
 
 
-	// Getters & Setters
+	// Getters & Setters	
 	public String getFirst_name() {
 		return firstName;
+	}	
+	public int getProfileId() {
+		return profileId;
+	}
+	public void setProfileId(int profileId) {
+		this.profileId = profileId;
+	}
+	public String getFirstName() {
+		return firstName;
+	}
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+	public String getContactNumber() {
+		return contactNumber;
+	}
+	public void setContactNumber(String contactNumber) {
+		this.contactNumber = contactNumber;
 	}
 	public void setFirst_name(String firstName) {
 		this.firstName = firstName;

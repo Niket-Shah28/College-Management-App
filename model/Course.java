@@ -1,32 +1,45 @@
 package com.aurionpro.model;
 
 public class Course {
-	private int course_id;
-	private String course_name;
+	private int courseId;
+	private String courseName;
 	private int duration;
 	private String stream;
 	
 	// Constructor
-	public Course(int course_id, String course_name, int duration, String stream) {
+	public Course(int courseId, String courseName, int duration, String stream) {
 		super();
-		this.course_id = course_id;
-		this.course_name = course_name;
+		this.courseId = courseId;
+		this.courseName = courseName;
 		this.duration = duration;
 		this.stream = stream;
 	}
 	
+	public Course(int courseId, String courseName) {
+		super();
+		this.courseId = courseId;
+		this.courseName = courseName;
+	}
+
+	public Course(String courseName, int duration, String stream) {
+		super();
+		this.courseName = courseName;
+		this.duration = duration;
+		this.stream = stream;
+	}
+
 	// Getters & Setters
-	public int getCourse_id() {
-		return course_id;
+	public int getCourseId() {
+		return courseId;
 	}
-	public void setCourse_id(int course_id) {
-		this.course_id = course_id;
+	public void setCourseId(int courseId) {
+		this.courseId = courseId;
 	}
-	public String getCourse_name() {
-		return course_name;
+	public String getCourseName() {
+		return courseName;
 	}
-	public void setCourse_name(String course_name) {
-		this.course_name = course_name;
+	public void setCourseName(String courseName) {
+		this.courseName = courseName;
 	}
 	public int getDuration() {
 		return duration;

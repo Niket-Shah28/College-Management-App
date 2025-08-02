@@ -3,105 +3,104 @@ package com.aurionpro.service;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.InputMismatchException;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
-import java.util.stream.Collectors;
 
-import com.aurionpro.dao.StudentDao;
+import com.aurionpro.dao.TeacherDao;
 import com.aurionpro.model.Course;
 import com.aurionpro.model.GenderChoice;
 import com.aurionpro.model.Profile;
-import com.aurionpro.model.Student;
-import com.aurionpro.model.StudentProfile;
 import com.aurionpro.model.SubjectCourseData;
-import com.aurionpro.model.SubjectType;
+import com.aurionpro.model.Teacher;
+import com.aurionpro.model.TeacherProfile;
 import com.aurionpro.validator.ProfileDetailsValidator;
 
-public class StudentService {
-	private StudentDao studentDao = StudentDao.getstudentDaoInstance();
-	private static StudentService studentService = null;
+public class TeacherService {
+	private TeacherDao teacherDao = TeacherDao.getstudentDaoInstance();
+	private static TeacherService teacherService = null;
 		
-	private StudentService() {
+	private TeacherService() {
 	}
 	
-	public static StudentService getstudentServiceInstance() {
-		if(studentService == null) {
-			studentService = new StudentService();
+	public static TeacherService getstudentServiceInstance() {
+		if(teacherService == null) {
+			teacherService = new TeacherService();
 		}
-		return studentService;
+		return teacherService;
 	}
 	
-	// SERVICES
-	public void addStudent(Scanner scanner) {
+	//SERVICE
+	
+	public void addTeacher(Scanner scanner) {
 		Profile profile = getProfileDetails(scanner);
 		if(profile == null) {
 			System.out.println("Invalid Details");
 			return;
 		}
-		Student student = getStudentDetails(scanner);
-		studentDao.addStudent(profile, student);
+		Teacher teacher = getTeacherDetails(scanner);
+		teacherDao.addTeacher(profile, teacher);
 	}
 	
-	public void deleteStudent(Scanner scanner) {
-		int studentIdToBeDeleted = chooseStudent(scanner);
-		if(studentIdToBeDeleted == 0) {
+	public void deleteTeacher(Scanner scanner) {
+		int teacherIdToBeDeleted = chooseTeacher(scanner);
+		if(teacherIdToBeDeleted == 0) {
 			return;
 		}
-		if(studentIdToBeDeleted == -1) {
+		if(teacherIdToBeDeleted == -1) {
 			System.out.println("Invalid Choice");
 			return;
 		}
-		studentDao.deleteStudent(studentIdToBeDeleted);
+		teacherDao.deleteTeacher(teacherIdToBeDeleted);
 	}
 	
-	public void updateStudentProfile(Scanner scanner) {
-		int studentToBeUpdated = chooseStudent(scanner);
+	public void updateTeacherProfile(Scanner scanner) {
+		int studentToBeUpdated = chooseTeacher(scanner);
 		if(studentToBeUpdated == 0) {
 			return;
 		}
-		Profile studentProfile = studentDao.getStudentForUpdateProfile(studentToBeUpdated);
-		updateProfile(scanner, studentProfile);
-		studentDao.updateStudentProfile(studentProfile);
+		Profile teacherProfile = teacherDao.getTeacherForUpdateProfile(studentToBeUpdated);
+		updateProfile(scanner, teacherProfile);
+		teacherDao.updateTeacherProfile(teacherProfile);
 	}
 	
-	public void getStudentsDataWithCourses() {
-		Map<Integer, Map<String, Object>> studentsDataWithCourses = studentDao.getStudentsCoursesAndSubjects();
-		displayStudentCourseData(studentsDataWithCourses);
-	}
-	
-	public void getParticularStudentCourseData(Scanner scanner) {
-		int studentId = chooseStudent(scanner);
-		Map<Integer, Map<String, Object>> studentDataWithCourses = studentDao.getParticularStudentsCoursesAndSubjects(studentId);
-		displayStudentCourseData(studentDataWithCourses);
-	}
-	
-	public void showAllStudentsProfile() {
-		List<StudentProfile> studentsProfile = studentDao.getAllStudentsProfile();
-		if(studentsProfile.isEmpty()){
-			System.out.println("No Students in Database !");
+	public void showAllTeachersProfile() {
+		List<TeacherProfile> teachersProfile = teacherDao.getAllTeachersProfile();
+		if(teachersProfile.isEmpty()){
+			System.out.println("No Teachers in Database !");
 			System.out.println();
 			return;
 		}
-		displayStudentProfilesTable(studentsProfile);
+		displayTeacherProfilesTable(teachersProfile);
 	}
 	
-	public void getParticularStudentProfile(Scanner scanner) {
-		int studentId = chooseStudent(scanner);
-		if(studentId == 0) {
+	public void getParticularTeacherProfile(Scanner scanner) {
+		int teacherId = chooseTeacher(scanner);
+		if(teacherId == 0) {
 			return;
 		}
-		StudentProfile studentProfile = studentDao.getParticularStudentProfile(studentId);
-		displayStudentProfilesTable(List.of(studentProfile));
+		
+		TeacherProfile teacherProfile = teacherDao.getParticularTeacherProfile(teacherId);
+		displayTeacherProfilesTable(List.of(teacherProfile));
 	}
 	
-	public void assignCourseToStudent(Scanner scanner) {
-		int studentId = chooseStudent(scanner);
-		if(studentId == 0) {
+	public void getTeachersDataWithCourses() {
+		Map<Integer, Map<String, Object>> teachersDataWithCourses = teacherDao.getSubjectsTaughtByEachTeacher();
+		displayTeacherCourseData(teachersDataWithCourses);
+	}
+	
+	public void getParticularTeacherCourseData(Scanner scanner) {
+		int teacherId = chooseTeacher(scanner);
+		Map<Integer, Map<String, Object>> teacherDataWithCourses = teacherDao.getSubjectsTaughtByParticularTeacher(teacherId);
+		displayTeacherCourseData(teacherDataWithCourses);
+	}
+	
+	public void assignTeacherToSubject(Scanner scanner) {
+		int teacherId = chooseTeacher(scanner);
+		if(teacherId == 0) {
 			return;
 		}
-		Map<Integer, List<SubjectCourseData>> subjectsInEachCourse = studentDao.getCoursesWithSubjects();
+		Map<Integer, List<SubjectCourseData>> subjectsInEachCourse = teacherDao.getCoursesWithSubjects();
 		List<Course> courseList = new ArrayList<>();
 		for (Map.Entry<Integer, List<SubjectCourseData>> entry : subjectsInEachCourse.entrySet()) {
 		    int courseId = entry.getKey();
@@ -115,46 +114,56 @@ public class StudentService {
 			return;
 		}
 		
-		List<Integer> subjectCourseIds = selectSubjects(scanner, subjectsInSelectedCourse);
-		studentDao.assignCourseToStudent(studentId, subjectCourseIds, courseId);
-	}
-	
-	public void removeStudentFromCourse(Scanner scanner) {
-		int studentId = chooseStudent(scanner);
-		Map<Integer, Map<String, Object>> studentDataWithCourses = studentDao.getParticularStudentsCoursesAndSubjects(studentId);
-		List<Course> studentCourses = extractCoursesFromStudentObject(studentDataWithCourses);
-		int courseId = selectCourse(scanner, studentCourses);
-		studentDao.removeStudentFromCourse(studentId,  courseId);
+		int subjectCourseId = selectSubject(scanner, subjectsInSelectedCourse);
+		teacherDao.assignTeacherToSubject(teacherId, subjectCourseId);
 	}
 	
 	
-	// INPUTS
 	
-	public List<Course> extractCoursesFromStudentObject(Map<Integer, Map<String, Object>> studentCourseObject) {
-	    Map<Integer, Course> uniqueCourses = new LinkedHashMap<>();
+	//INPUTS
+	
+	public int selectSubject(Scanner scanner, List<SubjectCourseData> selectedSubjects) {
+	    // Display all subjects in a formatted table
+	    String format = "| %-3s | %-25s | %-10s | %-14s | %-10s | %-10s |\n";
+	    String separator = String.join("", Collections.nCopies(90, "-"));
 
-	    for (Map<String, Object> studentData : studentCourseObject.values()) {
-	        Map<Integer, Map<String, Object>> courses = (Map<Integer, Map<String, Object>>) studentData.get("course");
+	    System.out.println("\nAvailable Subjects:");
+	    System.out.println(separator);
+	    System.out.printf(format, "No", "Subject Name", "Type", "Academic Year", "From Year", "To Year");
+	    System.out.println(separator);
 
-	        if (courses != null) {
-	            for (Map.Entry<Integer, Map<String, Object>> courseEntry : courses.entrySet()) {
-	                int courseId = courseEntry.getKey();
+	    for (int i = 0; i < selectedSubjects.size(); i++) {
+	        SubjectCourseData s = selectedSubjects.get(i);
+	        System.out.printf(format,
+	                i+1,
+	                s.getSubjectName(),
+	                s.getSubjectType(),
+	                s.getAcademicYear(),
+	                s.getFromYear(),
+	                s.getToYear());
+	    }
 
-	                // Avoid duplicates
-	                if (!uniqueCourses.containsKey(courseId)) {
-	                    Map<String, Object> courseData = courseEntry.getValue();
-	                    String courseName = (String) courseData.get("courseName");
+	    System.out.println(separator);
+	    System.out.print("Enter the subject you want to choose: ");
 
-	                    // You can add duration and stream if needed and available
-	                    Course course = new Course(courseId, courseName);
-	                    uniqueCourses.put(courseId, course);
-	                }
+	    int choice = -1;
+	    while (true) {
+	        try {
+	            choice = scanner.nextInt();
+	            if (choice >= 0 && choice < selectedSubjects.size()) {
+	                break;
+	            } else {
+	                System.out.print("Invalid choice. Please enter a valid number from the list: ");
 	            }
+	        } catch (InputMismatchException e) {
+	            System.out.print("Invalid input. Enter a number: ");
+	            scanner.next(); // clear invalid input
 	        }
 	    }
 
-	    return new ArrayList<>(uniqueCourses.values());
+	    return selectedSubjects.get(choice-1).getSubjectCourseId();
 	}
+
 	
 	public int selectCourse(Scanner scanner, List<Course> courseList) {
 	    System.out.println("Available Courses:");
@@ -175,90 +184,39 @@ public class StudentService {
 
 	    return selectedCourseId;
 	}
-
-
 	
-	public List<Integer> selectSubjects(Scanner scanner, List<SubjectCourseData> selectedSubjects) {
-	    List<SubjectCourseData> mandatorySubjects = selectedSubjects.stream()
-	            .filter(s -> s.getSubjectType().equals(SubjectType.MANDATORY.toString()))
-	            .collect(Collectors.toList());
-
-	    System.out.println("\nMandatory Subjects:");
-	    for (SubjectCourseData s : mandatorySubjects) {
-	        System.out.println("- " + s.getSubjectName() + " (ID: " + s.getSubjectId() + ")");
-	    }
-
-	    List<SubjectCourseData> optionalSubjects = selectedSubjects.stream()
-	            .filter(s -> s.getSubjectType().equals(SubjectType.OPTIONAL.toString()))
-	            .collect(Collectors.toList());
-
-	    System.out.println("\nOptional Subjects (choose only one):");
-	    for (int i = 0; i < optionalSubjects.size(); i++) {
-	        SubjectCourseData s = optionalSubjects.get(i);
-	        System.out.println(i + ": " + s.getSubjectName() + " (ID: " + s.getSubjectId() + ")");
-	    }
-
-	    int optionalChoice = -1;
-	    if (!optionalSubjects.isEmpty()) {
-	        System.out.print("\nEnter the number of the optional subject you want to choose (only one): ");
-	        while (true) {
-	            try {
-	                optionalChoice = scanner.nextInt();
-	                if (optionalChoice >= 0 && optionalChoice < optionalSubjects.size()) {
-	                    break;
-	                } else {
-	                    System.out.print("Invalid choice. Please enter a number from the list: ");
-	                }
-	            } catch (InputMismatchException e) {
-	                System.out.print("Invalid input. Enter a valid number: ");
-	                scanner.next(); // consume bad input
-	            }
-	        }
-	    }
-
-	    List<Integer> subjectCourseIds = new ArrayList<>();
-	    for (SubjectCourseData s : mandatorySubjects) {
-	        subjectCourseIds.add(s.getSubjectCourseId());
-	    }
-	    if (optionalChoice != -1) {
-	        subjectCourseIds.add(optionalSubjects.get(optionalChoice).getSubjectCourseId());
-	    }
-
-	    return subjectCourseIds;
-	}
-
-	private int chooseStudent(Scanner scanner) {
-		List<Student> students = studentDao.getStudentsNameAndId();
-		if(students.isEmpty()) {
+	private int chooseTeacher(Scanner scanner) {
+		List<Teacher> teachers = teacherDao.getTeacherNameAndId();
+		if(teachers.isEmpty()) {
 			System.out.println("No Students Present In Database");
 			System.out.println();
 			return 0;
 		}
 
-		System.out.printf("%-5s %-15s %-30s%n", "No.", "Roll Number", "Name");
+		System.out.printf("%-5s %-15s %-30s%n", "No.", "Teacher ID", "Name");
 		System.out.println("--------------------------------------------------------");
 
-		for (int i = 0; i < students.size(); i++) {
-		    Student student = students.get(i);
-		    System.out.printf("%-5d %-15s %-30s%n", (i + 1), student.getRollNumber(), student.getName());
+		for (int i = 0; i < teachers.size(); i++) {
+		    Teacher teacher = teachers.get(i);
+		    System.out.printf("%-5d %-15d %-30s%n", 
+		        (i + 1),
+		        teacher.getTeacherId(), 
+		        teacher.getName());
 		}
 		System.out.println("Enter Your Choice: ");
 		int choice = scanner.nextInt();
-		if(choice > 0 && choice <= students.size()) {
-			return students.get(choice - 1).getStudentId();
+		if(choice > 0 && choice <= teachers.size()) {
+			return teachers.get(choice - 1).getTeacherId();
 		}
 		return -1;
 	}
 	
-	private Student getStudentDetails(Scanner scanner) {
-		System.out.println("Enter Roll Number: ");
-		int rollNumber = scanner.nextInt();
-		scanner.nextLine();
-		System.out.println("Enter Father's First Name: ");
-		String fatherName = scanner.next();
-		System.out.println("Enter Mother's First Name: ");
-		String motherName = scanner.next();
-		return new Student(rollNumber, fatherName, motherName);
+	private Teacher getTeacherDetails(Scanner scanner) {
+		System.out.println("Enter Qualification of Teacher: ");
+		String qualification = scanner.next();
+		System.out.println("Enter Experience: ");
+		int experience = scanner.nextInt();
+		return new Teacher(qualification, experience);
 	}
 	
 	private void showProfileUpdatableFields() {
@@ -438,15 +396,15 @@ public class StudentService {
 	}
 	
 	//DISPLAY
-	public void displayStudentCourseData(Map<Integer, Map<String, Object>> studentDataMap) {
-	    for (Map.Entry<Integer, Map<String, Object>> studentEntry : studentDataMap.entrySet()) {
-	        Map<String, Object> studentInfo = studentEntry.getValue();
+	
+	public void displayTeacherCourseData(Map<Integer, Map<String, Object>> teachersDataMap) {
+	    for (Map.Entry<Integer, Map<String, Object>> teacherEntry : teachersDataMap.entrySet()) {
+	        Map<String, Object> teacherInfo = teacherEntry.getValue();
 
-	        System.out.println("STUDENT NAME: " + studentInfo.get("name"));
-	        System.out.println("ROLL NUMBER: " + studentInfo.get("rollNumber"));
+	        System.out.println("TEACHER NAME: " + teacherInfo.get("name"));
 
 	        Map<Integer, Map<String, Object>> courseMap =
-	            (Map<Integer, Map<String, Object>>) studentInfo.get("course");
+	            (Map<Integer, Map<String, Object>>) teacherInfo.get("course");
 
 	        for (Map.Entry<Integer, Map<String, Object>> courseEntry : courseMap.entrySet()) {
 	            Map<String, Object> courseInfo = courseEntry.getValue();
@@ -468,40 +426,44 @@ public class StudentService {
 	    }
 	}
 	
-	public void displayStudentProfilesTable(List<StudentProfile> students) {
-	    // Header
-	    String format = "| %-5s | %-12s | %-12s | %-12s | %-25s | %-6s | %-10s | %-15s | %-12s | %-12s | %-12s | %-10s | %-8s | %-18s |\n";
-	    String separator = String.join("", Collections.nCopies(195, "-"));
+	public void displayTeacherProfilesTable(List<TeacherProfile> teachers) {
+	    // Header format
+	    String format = "| %-5s | %-15s | %-10s | %-12s | %-12s | %-12s | %-25s | %-6s | %-15s | %-12s | %-12s | %-12s | %-10s | %-8s | %-10s | %-18s |\n";
+	    String separator = String.join("", Collections.nCopies(210, "-"));
 
+	    // Print header
 	    System.out.println(separator);
 	    System.out.printf(format,
-	        "ID", "First Name", "Middle Name", "Last Name", "Email",
-	        "Gender", "Roll No", "Contact No", "Address", "City",
-	        "State", "Country", "Blood", "Emergency Contact");
+	        "ID", "Qualification", "Exp(Yrs)", "First Name", "Middle Name", "Last Name", "Email",
+	        "Gender", "Contact No", "Address", "City", "State", "Country", "Blood", "Disabled", "Emergency Contact");
 	    System.out.println(separator);
 
-	    for (StudentProfile s : students) {
+	    // Print teacher data
+	    for (TeacherProfile t : teachers) {
 	        System.out.printf(format,
-	            s.getStudentId(),
-	            safe(s.getFirstName(), 12),
-	            safe(s.getMiddleName(), 12),
-	            safe(s.getLastName(), 12),
-	            safe(s.getEmail(), 25),
-	            s.getGender() != null ? s.getGender().toString() : "",
-	            s.getRollNumber(),
-	            safe(s.getContactNumber(), 15),
-	            safe(s.getAddress(), 12),
-	            safe(s.getCity(), 12),
-	            safe(s.getState(), 12),
-	            safe(s.getCountry(), 10),
-	            safe(s.getBloodGroup(), 8),
-	            safe(s.getEmergencyContactNumber(), 18)
+	            t.getTeacherId(),
+	            safe(t.getQualification(), 15),
+	            t.getExperience(),
+	            safe(t.getFirstName(), 12),
+	            safe(t.getMiddleName(), 12),
+	            safe(t.getLastName(), 12),
+	            safe(t.getEmail(), 25),
+	            t.getGender() != null ? t.getGender().toString() : "",
+	            safe(t.getContactNumber(), 15),
+	            safe(t.getAddress(), 12),
+	            safe(t.getCity(), 12),
+	            safe(t.getState(), 12),
+	            safe(t.getCountry(), 10),
+	            safe(t.getBloodGroup(), 8),
+	            t.isDisabilityStatus() ? "Yes" : "No",
+	            safe(t.getEmergencyContactNumber(), 18)
 	        );
 	    }
 
 	    System.out.println(separator);
 	}
 
+	
 	private String safe(String value, int maxLength) {
 	    if (value == null) return "";
 	    return value.length() > maxLength ? value.substring(0, maxLength - 1) + "…" : value;

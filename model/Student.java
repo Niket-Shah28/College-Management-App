@@ -6,8 +6,11 @@ public class Student {
 	private String fatherName;
 	private String motherName;
 	
+	// ONLY USED WHEN FULL NAME OF STUDENT IS RETREIVED BY JOINING PROFILE TABLE
+	private String name ;
+	
+	// CONSTRUCTORS
 	public Student(int studentId, int rollNumber, String fatherName, String motherName) {
-		super();
 		this.studentId = studentId;
 		this.rollNumber = rollNumber;
 		this.fatherName = fatherName;
@@ -15,18 +18,30 @@ public class Student {
 	}
 	
 	public Student(int rollNumber, String fatherName, String motherName) {
-		super();
 		this.rollNumber = rollNumber;
 		this.fatherName = fatherName;
 		this.motherName = motherName;
 	}
+	
+	// ONLY USED WHEN FULL NAME OF STUDENT IS RETREIVED BY JOINING PROFILE TABLE
+	public Student(int studentId, int rollNumber, String name) {
+		this.studentId = studentId;
+		this.rollNumber = rollNumber;
+		this.name = name;
+	}
+	
+	// GETTERS & SETTERS
+	public int getStudentId() {
+		return studentId;
+	}
+	
+	// ONLY USED WHEN FULL NAME OF STUDENT IS RETREIVED BY JOINING PROFILE TABLE
+	public String getName() {
+		return name;
+	}
 
 	public int getRollNumber() {
 		return rollNumber;
-	}
-
-	public void setRollNumber(int rollNumber) {
-		this.rollNumber = rollNumber;
 	}
 
 	public String getFatherName() {
