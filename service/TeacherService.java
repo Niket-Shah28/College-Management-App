@@ -17,13 +17,13 @@ import com.aurionpro.model.TeacherProfile;
 import com.aurionpro.validator.ProfileDetailsValidator;
 
 public class TeacherService {
-	private TeacherDao teacherDao = TeacherDao.getstudentDaoInstance();
+	private TeacherDao teacherDao = TeacherDao.getTeacherDaoInstance();
 	private static TeacherService teacherService = null;
 		
 	private TeacherService() {
 	}
 	
-	public static TeacherService getstudentServiceInstance() {
+	public static TeacherService getTeacherServiceInstance() {
 		if(teacherService == null) {
 			teacherService = new TeacherService();
 		}
@@ -188,7 +188,7 @@ public class TeacherService {
 	private int chooseTeacher(Scanner scanner) {
 		List<Teacher> teachers = teacherDao.getTeacherNameAndId();
 		if(teachers.isEmpty()) {
-			System.out.println("No Students Present In Database");
+			System.out.println("No Teachers Present In Database");
 			System.out.println();
 			return 0;
 		}
@@ -212,8 +212,9 @@ public class TeacherService {
 	}
 	
 	private Teacher getTeacherDetails(Scanner scanner) {
+		scanner.nextLine();
 		System.out.println("Enter Qualification of Teacher: ");
-		String qualification = scanner.next();
+		String qualification = scanner.nextLine();
 		System.out.println("Enter Experience: ");
 		int experience = scanner.nextInt();
 		return new Teacher(qualification, experience);
@@ -387,8 +388,8 @@ public class TeacherService {
 	        }
 	        return null;
         } 
-        boolean isStudent = true;
-        boolean isTeacher = false;
+        boolean isStudent = false;
+        boolean isTeacher = true;
         return new Profile(first_name, middle_name, last_name, email, gender, 
         		           contactNumber, address, city, state, country, bloodGroup, 
         		           disability, emergencyContactNumber, isStudent, isTeacher
@@ -403,7 +404,8 @@ public class TeacherService {
 
 	        System.out.println("TEACHER NAME: " + teacherInfo.get("name"));
 
-	        Map<Integer, Map<String, Object>> courseMap =
+	        @SuppressWarnings("unchecked")
+			Map<Integer, Map<String, Object>> courseMap =
 	            (Map<Integer, Map<String, Object>>) teacherInfo.get("course");
 
 	        for (Map.Entry<Integer, Map<String, Object>> courseEntry : courseMap.entrySet()) {
@@ -411,7 +413,8 @@ public class TeacherService {
 
 	            System.out.println("    COURSE: " + courseInfo.get("courseName"));
 
-	            Map<Integer, Map<String, Object>> subjectMap =
+	            @SuppressWarnings("unchecked")
+				Map<Integer, Map<String, Object>> subjectMap =
 	                (Map<Integer, Map<String, Object>>) courseInfo.get("subject");
 
 	            for (Map<String, Object> subjectInfo : subjectMap.values()) {

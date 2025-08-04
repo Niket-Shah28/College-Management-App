@@ -20,7 +20,7 @@ import com.aurionpro.model.SubjectType;
 import com.aurionpro.validator.ProfileDetailsValidator;
 
 public class StudentService {
-	private StudentDao studentDao = StudentDao.getstudentDaoInstance();
+	private StudentDao studentDao = StudentDao.getStudentDaoInstance();
 	private static StudentService studentService = null;
 		
 	private StudentService() {
@@ -134,7 +134,8 @@ public class StudentService {
 	    Map<Integer, Course> uniqueCourses = new LinkedHashMap<>();
 
 	    for (Map<String, Object> studentData : studentCourseObject.values()) {
-	        Map<Integer, Map<String, Object>> courses = (Map<Integer, Map<String, Object>>) studentData.get("course");
+	        @SuppressWarnings("unchecked")
+			Map<Integer, Map<String, Object>> courses = (Map<Integer, Map<String, Object>>) studentData.get("course");
 
 	        if (courses != null) {
 	            for (Map.Entry<Integer, Map<String, Object>> courseEntry : courses.entrySet()) {
@@ -445,7 +446,8 @@ public class StudentService {
 	        System.out.println("STUDENT NAME: " + studentInfo.get("name"));
 	        System.out.println("ROLL NUMBER: " + studentInfo.get("rollNumber"));
 
-	        Map<Integer, Map<String, Object>> courseMap =
+	        @SuppressWarnings("unchecked")
+			Map<Integer, Map<String, Object>> courseMap =
 	            (Map<Integer, Map<String, Object>>) studentInfo.get("course");
 
 	        for (Map.Entry<Integer, Map<String, Object>> courseEntry : courseMap.entrySet()) {
@@ -453,7 +455,8 @@ public class StudentService {
 
 	            System.out.println("    COURSE: " + courseInfo.get("courseName"));
 
-	            Map<Integer, Map<String, Object>> subjectMap =
+	            @SuppressWarnings("unchecked")
+				Map<Integer, Map<String, Object>> subjectMap =
 	                (Map<Integer, Map<String, Object>>) courseInfo.get("subject");
 
 	            for (Map<String, Object> subjectInfo : subjectMap.values()) {

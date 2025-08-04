@@ -7,8 +7,8 @@ import com.aurionpro.service.StudentService;
 public class StudentController {
     private static final StudentService studentService = StudentService.getstudentServiceInstance();
 
-    public static void run() {
-        Scanner scanner = new Scanner(System.in);
+    public static void run(Scanner scanner) {
+       
         while (true) {
         	scanner.nextLine();
             System.out.println("\n========== Student Management Menu ==========");
@@ -22,7 +22,7 @@ public class StudentController {
             System.out.println("8. View Courses Opted with Subjects (Particular Student)");
             System.out.println("9. Remove Student From a Course");
             System.out.println("10. Exit");
-            System.out.print("Enter your choice (1-9): ");
+            System.out.print("Enter your choice: ");
 
             String input = scanner.nextLine().trim();
 

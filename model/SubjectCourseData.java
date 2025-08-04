@@ -11,6 +11,7 @@ public class SubjectCourseData {
 	private int fromYear;
 	private int toYear;
 	
+	//CONSTRUCTORS
 	public SubjectCourseData(int subjectCourseId, int courseId, String courseName, int subjectId, String subjectName, int academicYear,
 			SubjectType subjectType, int fromYear, int toYear) {
 		super();
@@ -25,6 +26,40 @@ public class SubjectCourseData {
 		this.toYear = toYear;
 	}
 	
+	public SubjectCourseData(int subjectId, int courseId, int fromYear, int toYear, int academicYear,
+			SubjectType subjectType) {
+		this.subjectId = subjectId;
+		this.courseId = courseId;
+		this.fromYear = fromYear;
+		this.toYear = toYear;
+		this.academicYear = academicYear;
+		this.subjectType = subjectType;
+	}
+	
+	public SubjectCourseData(int subjectCourseId, int subjectId, int courseId, int fromYear, int toYear, int academicYear,
+			SubjectType subjectType) {
+		super();
+		this.subjectCourseId = subjectCourseId;
+		this.subjectId = subjectId;
+		this.courseId = courseId;
+		this.fromYear = fromYear;
+		this.toYear = toYear;
+		this.academicYear = academicYear;
+		this.subjectType = subjectType;
+	}
+	
+	public SubjectCourseData(int courseId, String courseName, int academicYear, int fromYear, int toYear,
+			SubjectType subjectType) {
+		
+		this.courseId = courseId;
+		this.courseName = courseName;
+		this.academicYear = academicYear;
+		this.subjectType = subjectType;
+		this.fromYear = fromYear;
+		this.toYear = toYear;
+	}
+	
+	//GETTERS & SETTERS
 	public int getSubjectCourseId() {
 		return subjectCourseId;
 	}

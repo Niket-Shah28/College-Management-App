@@ -1,27 +1,32 @@
 package com.aurionpro.model;
 
 public class Subject {
-	private int subject_id;
-	private String subject_name;
+	private int subjectId;
+	private String subjectName;
 	
 	// Constructors
-	public Subject(int subject_id, String subject_name) {
+	public Subject(int subjectId, String subjectName) {
 		super();
-		this.subject_id = subject_id;
-		this.subject_name = subject_name;
+		this.subjectId = subjectId;
+		this.subjectName = subjectName;
 	}
 	
-	public Subject(String subject_name) {
+	public Subject(String subjectName) {
 		super();
-		this.subject_name = subject_name;
+		this.subjectName = subjectName;
 	}
 
 
 	// Getters & Setters
-	public String getSubject_name() {
-		return subject_name;
+	
+	public String getSubjectName() {
+		return subjectName;
 	}
-	public void setSubject_name(String subject_name) {
-		this.subject_name = subject_name;
+	public int getSubjectId() {
+		return subjectId;
+	}
+
+	public void setSubjectName(String subjectName) {
+		this.subjectName = subjectName;
 	}
 }

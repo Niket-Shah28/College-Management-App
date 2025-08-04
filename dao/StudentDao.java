@@ -28,7 +28,7 @@ public class StudentDao {
 	private StudentDao() {
 	}
 	
-	public static StudentDao getstudentDaoInstance() {
+	public static StudentDao getStudentDaoInstance() {
 		if(studentDao == null) {
 			studentDao = new StudentDao();
 		}
@@ -213,6 +213,7 @@ public class StudentDao {
 				}
 			);
 			
+			@SuppressWarnings("unchecked")
 			Map<Integer, Map<String, Object>> courseMap = (Map<Integer, Map<String, Object>>)studentCourseObject.get(studentId).get("course");
 			
 			courseMap.computeIfAbsent(courseId, k ->{
@@ -223,6 +224,7 @@ public class StudentDao {
 				}
 			);
 			
+			@SuppressWarnings("unchecked")
 			Map<Integer, Map<String, Object>> subjectMap = (Map<Integer, Map<String, Object>>)courseMap.get(courseId).get("subject");
 			
 			Map<String, Object> subjectEntry = new HashMap<>();

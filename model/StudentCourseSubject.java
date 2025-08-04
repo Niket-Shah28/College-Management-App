@@ -25,6 +25,26 @@ public class StudentCourseSubject {
 		this.subjectType = subjectType;
 		this.academicYear = academicYear;
 	}
+	
+	public StudentCourseSubject(int studentId, int rollNumber, String name, int courseId, String courseName) {
+		super();
+		this.studentId = studentId;
+		this.rollNumber = rollNumber;
+		this.name = name;
+		this.courseId = courseId;
+		this.courseName = courseName;
+	}
+
+	public StudentCourseSubject(int courseId, String courseName, int subjectId, String subjectName,
+			SubjectType subjectType, int academicYear) {
+		super();
+		this.courseId = courseId;
+		this.courseName = courseName;
+		this.subjectId = subjectId;
+		this.subjectName = subjectName;
+		this.subjectType = subjectType;
+		this.academicYear = academicYear;
+	}
 
 	//GETTERS & SETTERS
 	public int getStudentId() {

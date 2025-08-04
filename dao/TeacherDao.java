@@ -16,8 +16,6 @@ import java.util.stream.Collectors;
 import com.aurionpro.database.Database;
 import com.aurionpro.model.GenderChoice;
 import com.aurionpro.model.Profile;
-import com.aurionpro.model.StudentCourseSubject;
-import com.aurionpro.model.StudentProfile;
 import com.aurionpro.model.SubjectCourseData;
 import com.aurionpro.model.SubjectType;
 import com.aurionpro.model.Teacher;
@@ -30,7 +28,7 @@ public class TeacherDao {
 	private TeacherDao() {
 	}
 	
-	public static TeacherDao getstudentDaoInstance() {
+	public static TeacherDao getTeacherDaoInstance() {
 		if(teacherDao == null) {
 			teacherDao = new TeacherDao();
 		}
@@ -60,7 +58,7 @@ public class TeacherDao {
 			callableStatement.setBoolean(14, profile.isStudent());
 			callableStatement.setBoolean(15, profile.isTeacher());
 			
-			// STUDENT SPECEFIC DETAILS
+			// TEACHER SPECEFIC DETAILS
 			callableStatement.setString(16, teacher.getQualification());
 			callableStatement.setInt(17, teacher.getExperience());
 			
@@ -70,8 +68,8 @@ public class TeacherDao {
 			
 			callableStatement.execute();
 			
-			boolean isInserted = callableStatement.getBoolean(19);
-			String message = callableStatement.getString(20);
+			boolean isInserted = callableStatement.getBoolean(18);
+			String message = callableStatement.getString(19);
 			
 			if(isInserted) {
 				System.out.println("Teacher Added Successfully !");
@@ -284,6 +282,7 @@ public class TeacherDao {
 				}
 			);
 			
+			@SuppressWarnings("unchecked")
 			Map<Integer, Map<String, Object>> courseMap = (Map<Integer, Map<String, Object>>)teacherSubjectObject.get(teacherId).get("course");
 			
 			courseMap.computeIfAbsent(courseId, k ->{
@@ -294,6 +293,7 @@ public class TeacherDao {
 				}
 			);
 			
+			@SuppressWarnings("unchecked")
 			Map<Integer, Map<String, Object>> subjectMap = (Map<Integer, Map<String, Object>>)courseMap.get(courseId).get("subject");
 			
 			Map<String, Object> subjectEntry = new HashMap<>();
