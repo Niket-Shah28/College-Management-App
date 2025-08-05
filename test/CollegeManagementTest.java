@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.util.Scanner;
 
 import com.aurionpro.controller.CourseController;
+import com.aurionpro.controller.FeesController;
 import com.aurionpro.controller.StudentController;
 import com.aurionpro.controller.SubjectController;
 import com.aurionpro.controller.TeacherController;
@@ -19,7 +20,8 @@ public class CollegeManagementTest {
             System.out.println("2. Teacher Dashboard");
             System.out.println("3. Course Dashboard");
             System.out.println("4. Subject Dashboard");
-            System.out.println("5. Exit");
+            System.out.println("5. Fees Dashboard");
+            System.out.println("6. Exit");
             System.out.print("Enter your choice: ");
 
             String input = scanner.nextLine().trim();
@@ -38,6 +40,9 @@ public class CollegeManagementTest {
                     SubjectController.run(scanner);
                     break;
                 case "5":
+                	FeesController.run(scanner);
+                	break;
+                case "6":
                 	try {
             			Database.connect().close();
             		} catch (SQLException e) {

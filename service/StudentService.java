@@ -228,7 +228,7 @@ public class StudentService {
 	    return subjectCourseIds;
 	}
 
-	private int chooseStudent(Scanner scanner) {
+	public int chooseStudent(Scanner scanner) {
 		List<Student> students = studentDao.getStudentsNameAndId();
 		if(students.isEmpty()) {
 			System.out.println("No Students Present In Database");
@@ -440,6 +440,9 @@ public class StudentService {
 	
 	//DISPLAY
 	public void displayStudentCourseData(Map<Integer, Map<String, Object>> studentDataMap) {
+		if(studentDataMap == null || studentDataMap.isEmpty()) {
+			System.out.println("No Courses Assigned to Student");
+		}
 	    for (Map.Entry<Integer, Map<String, Object>> studentEntry : studentDataMap.entrySet()) {
 	        Map<String, Object> studentInfo = studentEntry.getValue();
 

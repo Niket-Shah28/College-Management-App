@@ -26,7 +26,16 @@ public class CourseService {
 	//SERVICES
 	public void addCourse(Scanner scanner) {
 		Course course = getCourseDetails(scanner);
-		courseDao.addCourse(course);
+		double courseFees;
+        while(true) {
+	        System.out.println("Enter Course Fees: ");
+	        courseFees = scanner.nextDouble();
+	        if(courseFees >= 0) {
+	        	break;
+	        }
+	        System.out.println("Course Fees Must be greater than Zero");
+        }
+		courseDao.addCourse(course, courseFees);
 	}
 	
 	public void deleteCourse(Scanner scanner) {
@@ -51,14 +60,15 @@ public class CourseService {
 		displaySubjects(subjects);
 		System.out.println("Enter the Choice OR ENTER 0 to Exit: ");
 		int choice = scanner.nextInt();
-		int subjectId = subjects.get(choice - 1).getSubjectId();
-		if(subjectId == 0) {
+		
+		if(choice == 0) {
 			return;
 		}
-		if(subjectId < 0 || subjectId > subjects.size()) {
+		if(choice < 0 || choice > subjects.size()) {
 			System.out.println("Invalid Choice");
 			return;
 		}
+		int subjectId = subjects.get(choice - 1).getSubjectId();
 		System.out.println("Enter Starting Year: ");
 		int fromYear = scanner.nextInt();
 		System.out.println("Enter Ending Year: ");
@@ -316,6 +326,4 @@ public class CourseService {
 	                          s.getSubjectName());
 	    }
 	}
-
-
 }

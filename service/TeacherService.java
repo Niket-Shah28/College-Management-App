@@ -399,6 +399,9 @@ public class TeacherService {
 	//DISPLAY
 	
 	public void displayTeacherCourseData(Map<Integer, Map<String, Object>> teachersDataMap) {
+		if(teachersDataMap == null || teachersDataMap.isEmpty()) {
+			System.out.println("No subjects Assigned to teacher");
+		}
 	    for (Map.Entry<Integer, Map<String, Object>> teacherEntry : teachersDataMap.entrySet()) {
 	        Map<String, Object> teacherInfo = teacherEntry.getValue();
 

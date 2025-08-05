@@ -29,21 +29,22 @@ public class CourseDao {
 		return courseDao;
 	}
 	
-	public void addCourse(Course course) {
+	public void addCourse(Course course, double courseFees) {
 		Connection connection = Database.connect();
 		try {
-			CallableStatement callableStatement = connection.prepareCall("{CALL add_course(?, ?, ?, ?, ?)}");
+			CallableStatement callableStatement = connection.prepareCall("{CALL add_course(?, ?, ?, ?, ?, ?)}");
 			callableStatement.setString(1, course.getCourseName());
 			callableStatement.setInt(2, course.getDuration());
 			callableStatement.setString(3, course.getStream());
+			callableStatement.setDouble(4, courseFees);
 			
-			callableStatement.registerOutParameter(4, Types.BOOLEAN);
-			callableStatement.registerOutParameter(5, Types.VARCHAR);
+			callableStatement.registerOutParameter(5, Types.BOOLEAN);
+			callableStatement.registerOutParameter(6, Types.VARCHAR);
 			
 			callableStatement.execute();
 			
-			boolean isInserted = callableStatement.getBoolean(4);
-			String message = callableStatement.getString(5);
+			boolean isInserted = callableStatement.getBoolean(5);
+			String message = callableStatement.getString(6);
 			
 			if(isInserted) {
 				System.out.println("COURSE ADDED SUCCESSFULLY !");
